@@ -1,0 +1,59 @@
+name: 'Claude PR Reviewer'
+description: 'AI-powered pull request code review using Claude, OpenAI, or any OpenAI-compatible API'
+
+inputs:
+  github-token:
+    description: 'Token used to read the PR and post comments (usually secrets.GITHUB_TOKEN)'
+    required: true
+  pr-number:
+    description: 'The pull request number to review'
+    required: true
+  llm-provider:
+    description: 'anthropic | openai | compatible'
+    required: false
+    default: 'anthropic'
+  llm-model:
+    description: 'Optional model override'
+    required: false
+    default: ''
+  llm-base-url:
+    description: 'Base URL, only needed when llm-provider is "compatible"'
+    required: false
+    default: ''
+  anthropic-api-key:
+    required: false
+    default: ''
+  openai-api-key:
+    required: false
+    default: ''
+  llm-api-key:
+    description: 'API key for the "compatible" provider'
+    required: false
+    default: ''
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Setup Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+
+    - name: Install dependencies
+      shell: bash
+      working-directory: ${{ github.action_path }}
+      run: npm install @octokit/rest @anthropic-ai/sdk openai
+
+    - name: Run AI review
+      shell: bash
+      working-directory: ${{ github.action_path }}
+      env:
+        GITHUB_TOKEN: ${{ inputs.github-token }}
+        PR_NUMBER: ${{ inputs.pr-number }}
+        LLM_PROVIDER: ${{ inputs.llm-provider }}
+        LLM_MODEL: ${{ inputs.llm-model }}
+        LLM_BASE_URL: ${{ inputs.llm-base-url }}
+        ANTHROPIC_API_KEY: ${{ inputs.anthropic-api-key }}
+        OPENAI_API_KEY: ${{ inputs.openai-api-key }}
+        LLM_API_KEY: ${{ inputs.llm-api-key }}
+      run: node scripts/review-pr.js
