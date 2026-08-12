@@ -1,0 +1,11 @@
+{
+  "name": "claude-pr-reviewer",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@octokit/rest": "^20.1.1",
+    "@anthropic-ai/sdk": "^0.32.0",
+    "openai": "^4.70.0"
+  }
+}
