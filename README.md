@@ -1,4 +1,4 @@
-# Claude PR Reviewer
+# AI PR Reviewer
 
 An AI-powered code review agent that automatically reviews GitHub pull requests and posts inline comments. Runs as a reusable GitHub Action, powered by Claude, OpenAI, or any OpenAI-compatible API (OpenRouter, Groq, Mistral, local Ollama, etc.).
 
