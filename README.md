@@ -54,10 +54,30 @@ jobs:
 
 Then in that repo's **Settings**:
 
-1. **Secrets and variables → Actions → Secrets** — add whichever key(s) the provider needs (see table below). Secrets do not carry over between repos; each repo needs its own.
-2. **Actions → General → Workflow permissions** — set to **Read and write permissions**, or the Action can run but won't be able to post comments.
+### 1. Add the API key as a repository secret
 
-Push to the repo's default branch, then open a pull request to trigger a run. Check the **Actions** tab to watch it live.
+1. Open the repo on GitHub and go to **Settings** (top right of the repo, not your account settings).
+2. In the left sidebar, click **Secrets and variables → Actions**.
+3. Make sure you're on the **Secrets** tab (not Variables).
+4. Click **New repository secret**.
+5. In **Name**, enter the exact name your workflow file references after `secrets.` — e.g. `ANTHROPIC_API_KEY`.
+6. In **Secret**, paste the actual API key value.
+7. Click **Add secret**.
+
+The name here must match the workflow file *exactly* (case-sensitive) — a mismatch is the most common cause of "Missing API key" errors. Secrets also don't carry over between repos; each repo that uses this Action needs its own copy of the secret, even though the Action's code itself lives in one central repo.
+
+### 2. Enable workflow write permissions
+
+1. Same repo, **Settings → Actions → General**.
+2. Scroll to **Workflow permissions**.
+3. Select **Read and write permissions**.
+4. Click **Save**.
+
+Without this, the Action can run and read the PR but will fail to post comments back onto it.
+
+### 3. Trigger a run
+
+Push the workflow file to the repo's default branch, then open a pull request. Check the **Actions** tab to watch the run live.
 
 ## Provider options
 
